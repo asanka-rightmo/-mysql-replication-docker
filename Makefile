@@ -19,9 +19,11 @@ up:
 # Step 2: Set up Master replication
 setup-master:
 	@echo "Setting up Master configuration..."
-	docker exec -it $(MASTER_CONTAINER) mysql -u root -p$(MYSQL_ROOT_PASSWORD) -e "CREATE USER IF NOT EXISTS '$(MYSQL_REPLICATION_USER)'@'%' IDENTIFIED BY '$(MYSQL_REPLICATION_PASSWORD)';"
-	docker exec -it $(MASTER_CONTAINER) mysql -u root -p$(MYSQL_ROOT_PASSWORD) -e "GRANT REPLICATION SLAVE ON *.* TO '$(MYSQL_REPLICATION_USER)'@'%';"
-	docker exec -it $(MASTER_CONTAINER) mysql -u root -p$(MYSQL_ROOT_PASSWORD) -e "FLUSH PRIVILEGES;"
+	docker exec -i $(MASTER_CONTAINER) mysql -u root -p
+	CREATE USER IF NOT EXISTS '$(MYSQL_REPLICATION_USER)'@'%' IDENTIFIED BY '$(MYSQL_REPLICATION_PASSWORD)';
+	GRANT REPLICATION SLAVE ON *.* TO '$(MYSQL_REPLICATION_USER)'@'%';
+	FLUSH PRIVILEGES;
+	
 
 # Step 3: Set up Slave replication
 setup-slave:
